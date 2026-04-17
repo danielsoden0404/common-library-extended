@@ -1,0 +1,21 @@
+name: Semgrep Code analysis
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+  schedule:
+    - cron: '30 1 * * 3'
+
+jobs:
+  semgrep:
+    name: Semgrep Code analysis
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Run Semgrep (bash only)
+        run: semgrep scan --config p/default --include="*.sh" --error
